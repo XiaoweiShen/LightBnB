@@ -56,8 +56,12 @@ const getUserWithId = function(id) {
   return pool.query(`
     select * from users where id = $1
       `,[id])
-    .then((result)=>{
-      return (result.rows[0]);
+    .then(res => {
+      if (res.rows.length) {
+        return res.rows[0];
+      } else {
+        return null;
+      }
     })
     .catch((err)=>{
       console.log(err.message);
@@ -95,7 +99,28 @@ exports.addUser = addUser;
  * @param {string} guest_id The id of the user.
  * @return {Promise<[{}]>} A promise to the reservations.
  */
-const getAllReservations = function(guest_id, limit = 10) {
+const getAllReservations = function(guest_id) {
+  return pool.query(`
+  select properties.*,avg(property_reviews.rating) as average_rating from properties join property_reviews on property_reviews.property_id = properties.id
+  join reservations on reservations.property_id = properties.id
+  group by properties.id,reservations.guest_id having reservations.guest_id = $1
+  order by properties.title
+   `,[guest_id])
+.then((result)=>{
+  if (result.rows.length) {
+    return result.rows;
+  } else {
+    return null;
+  }
+  // setTimeout(()=>{
+  //   console.log(result.rows);
+  // })
+})
+.catch((err)=>{
+  console.log(err.message);
+})
+
+
   return getAllProperties(null, 2);
 }
 exports.getAllReservations = getAllReservations;
@@ -112,16 +137,19 @@ exports.getAllReservations = getAllReservations;
 const getAllProperties = function(options,limit=10) {
   
   return pool.query(`
-    select id,owner_id,title,cost_per_night,country from properties limit $1
+    select properties.*,avg(property_reviews.rating) as average_rating from properties join property_reviews on property_id = properties.id
+    group by properties.id
+    limit $1
     `,[limit])
   .then((result)=>{
-    console.log(result.rows);
+    // setTimeout(()=>{
+    //   console.log(result.rows);
+    // })
     return (result.rows);
   })
   .catch((err)=>{
     console.log(err.message);
   })
-
   // const limitedProperties = {};
   // for (let i = 1; i <= limit; i++) {
   //   limitedProperties[i] = properties[i];
