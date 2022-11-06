@@ -35,7 +35,7 @@ It's all about that database. I build the back-end queries that allow users to s
 2) Run the development web server using the `npm run local` command.
 3) Go to `localhost:8086` on your browser, enjoy!
 
-## How To Use TinyApp
+## How To Use App
 
 - Test User: sebastianguerra@ymail.com Passord: 'password'
 
