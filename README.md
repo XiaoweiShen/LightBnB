@@ -32,10 +32,10 @@ It's all about that database. I build the back-end queries that allow users to s
 ## Getting Started
 
 1) Install all dependencies (using the `npm install` command).
-2) Run the development web server using the `npm run local` command.
+2) Change dir to `\LightBnB_WebApp-master` and using the `npm run local` command.
 3) Go to `localhost:8086` on your browser, enjoy!
 
-## How To Use TinyApp
+## How To Use 
 
 - Test User: sebastianguerra@ymail.com Passord: 'password'
 
